@@ -1143,7 +1143,6 @@
   </nav>
 
   <script>
-(function(){
 'use strict';
 var firebaseConfig={apiKey:"AIzaSyAxaxqQqM6ChgeAEVQ2lvQKEkjzgiEgZMo",authDomain:"kailash-ghee-bhandar.firebaseapp.com",projectId:"kailash-ghee-bhandar",storageBucket:"kailash-ghee-bhandar.firebasestorage.app",messagingSenderId:"812290449464",appId:"1:812290449464:web:9966862c5987470af0c6cd",measurementId:"G-8VCQ15DTGY"};
 firebase.initializeApp(firebaseConfig);
@@ -1194,7 +1193,7 @@ var Store={
   listeners:[],
   onChange:function(fn){this.listeners.push(fn)},
   notify:function(){localStorage.setItem('kgb-cart',JSON.stringify(this.cart));localStorage.setItem('kgb-wishlist',JSON.stringify(this.wishlist));this.listeners.forEach(function(f){f()})},
-  addToCart:function(pid,vIdx,qty){qty=qty||1;var key=pid+'-'+(vIdx||0);var ex=this.cart.find(function(i){return i.key===key});if(ex){ex.qty+=qty}else{this.cart.push({pid:pid,vIdx:vIdx||0,qty:qty})}this.notify();toast('Added to cart','success')},
+  addToCart:function(pid,vIdx,qty){qty=qty||1;var key=pid+'-'+(vIdx||0);var ex=this.cart.find(function(i){return i.key===key});if(ex){ex.qty+=qty}else{this.cart.push({key:key,pid:pid,vIdx:vIdx||0,qty:qty})}this.notify();toast('Added to cart','success')},
   updateQty:function(key,qty){if(qty<=0){this.removeFromCart(key);return}var item=this.cart.find(function(i){return i.key===key});if(item){item.qty=qty;this.notify()}},
   removeFromCart:function(key){this.cart=this.cart.filter(function(i){return i.key!==key});this.notify();toast('Removed from cart','info')},
   clearCart:function(){this.cart=[];this.notify()},
@@ -1313,7 +1312,6 @@ function handleHashBtns(){var hash=window.location.hash.replace('#','');document
 window.addEventListener('hashchange',handleHashBtns);
 navigate();animateHero();handleHashBtns();
 setTimeout(function(){initScrollReveal()},500);
-})();
 </script>
 </body>
 </html>
