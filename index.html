@@ -670,6 +670,23 @@
     .btn-google:hover{background:var(--clr-bg)}
     .btn-full{width:100%}
 
+    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+    .login-overlay.open{display:flex}
+    .login-modal{background:var(--clr-white);border-radius:var(--r-lg);display:grid;grid-template-columns:1fr 1fr;max-width:720px;width:100%;max-height:90vh;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .login-modal__close{position:absolute;top:.75rem;right:.75rem;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:1.25rem;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .login-modal__close:hover{background:var(--clr-white)}
+    .login-modal__left{background:var(--clr-green);color:var(--clr-white);padding:2.5rem;display:flex;flex-direction:column;justify-content:center}
+    .login-modal__logo{font-family:var(--ff-h);font-size:1.5rem;font-weight:800;margin-bottom:1rem}
+    .login-modal__left h2{font-size:1.3rem;font-weight:700;margin-bottom:.5rem;line-height:1.3}
+    .login-modal__left p{font-size:.85rem;opacity:.85;line-height:1.5}
+    .login-modal__right{padding:2rem;overflow-y:auto}
+    .login-modal__title{font-size:1.2rem;margin-bottom:1.25rem}
+    .login-modal__form{display:flex;flex-direction:column;gap:.85rem}
+    .login-modal__form .form-label{font-size:.75rem;font-weight:600;margin-bottom:.25rem;display:block;color:var(--clr-text)}
+    .login-modal__form .form-input{width:100%;padding:.65rem .85rem;border:1.5px solid var(--clr-border);border-radius:var(--r-sm);font-size:.85rem;outline:none;transition:border-color .2s}
+    .login-modal__form .form-input:focus{border-color:var(--clr-green)}
+    .login-modal__toggle{text-align:center;font-size:.8rem;color:var(--clr-muted);margin-top:.25rem}
+
     /* Account */
     .account-grid{display:grid;grid-template-columns:240px 1fr;gap:2rem;margin:2rem 0}
     .account-sidebar{background:var(--clr-white);border:1px solid var(--clr-border-lt);border-radius:var(--r-md);padding:1.5rem;position:sticky;top:80px;height:fit-content}
@@ -782,6 +799,8 @@
       .account-sidebar{position:static}
       .auth-card{grid-template-columns:1fr}
       .auth-card__left{display:none}
+      .login-modal{grid-template-columns:1fr}
+      .login-modal__left{display:none}
       .form-grid{grid-template-columns:1fr}
       .oc-card{margin:1rem;padding:1.5rem}
       .track-card{margin:1rem;padding:1.5rem}
@@ -818,7 +837,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </button>
           <div class="navbar__dd" id="nav-user-dd">
-            <div id="dd-auth"><a href="#/login">Login / Sign Up</a></div>
+            <div id="dd-auth"><button id="nav-login-btn" style="background:none;border:none;cursor:pointer;text-align:left;width:100%;padding:.75rem 1rem;font-size:.8rem;color:var(--clr-text)">Login / Sign Up</button></div>
             <div id="dd-user" style="display:none"><a href="#/account">My Account</a><a href="#/orders">My Orders</a><a href="#/wishlist">Wishlist</a><a href="#/cart">Cart</a><hr><button id="nav-logout-btn">Logout</button></div>
           </div>
         </div>
@@ -833,7 +852,7 @@
       <a class="navbar__mobile-link" href="#/wishlist">Wishlist</a>
       <a class="navbar__mobile-link" href="#/orders">Orders</a>
       <a class="navbar__mobile-link" href="#/account">Account</a>
-      <a class="navbar__mobile-link" href="#/login" id="mobile-login-link">Login</a>
+      <a class="navbar__mobile-link" href="javascript:void(0)" id="mobile-login-link">Login</a>
       <a class="btn btn-green btn-lg" href="#/shop" style="margin-top:1rem">Shop Now</a>
     </div>
   </nav>
@@ -850,6 +869,43 @@
   </div>
 
   <div class="cart-overlay" id="cart-overlay"></div>
+
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-modal">
+      <button class="login-modal__close" id="login-close" aria-label="Close">&times;</button>
+      <div class="login-modal__left">
+        <div class="login-modal__brand">
+          <div class="login-modal__logo">Kailash</div>
+          <h2>Welcome to Kailash Ghee Bhandar</h2>
+          <p>Fresh dairy delivered to your doorstep in Bhagalpur.</p>
+        </div>
+      </div>
+      <div class="login-modal__right">
+        <h2 class="login-modal__title" id="login-title">Login / Sign Up</h2>
+        <div class="login-modal__form">
+          <div id="login-name-group" style="display:none">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="login-name" placeholder="Your full name">
+          </div>
+          <div>
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="login-email" placeholder="your@email.com">
+          </div>
+          <div>
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" id="login-pass" placeholder="Min 6 characters">
+          </div>
+          <button class="btn btn-green btn-full" id="login-submit-btn">Continue with Email</button>
+          <div class="auth-divider"><span>or</span></div>
+          <button class="btn btn-google btn-full" id="login-google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="20" height="20" style="margin-right:8px;vertical-align:middle">Continue with Google
+          </button>
+          <p class="login-modal__toggle" id="login-toggle-text">Don't have an account? <button class="btn-link" id="login-toggle-btn">Sign Up</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping Cart">
     <div class="cart-drawer__header">
       <h3 class="cart-drawer__title">Your Cart <span class="cart-drawer__count" id="cd-count"></span></h3>
@@ -1219,8 +1275,8 @@ function signup(e,p,n){return auth.createUserWithEmailAndPassword(e,p).then(func
 function googleSignIn(){var pr=new firebase.auth.GoogleAuthProvider();return auth.signInWithPopup(pr)}
 function logout(){Store.syncToFirestore(currentUser?currentUser.uid:null);return auth.signOut().then(function(){window.location.hash='#/';toast('Logged out successfully','success')})}
 function getUserProfile(){if(!currentUser)return null;return{uid:currentUser.uid,email:currentUser.email,displayName:currentUser.displayName||'User',phone:currentUser.phoneNumber||''}}
-function requireAuth(){if(!currentUser){window.location.hash='#/login';toast('Please login to continue','info');return false}return true}
-function updateNavAuth(u){var al=document.getElementById('dd-auth'),ul=document.getElementById('dd-user'),ml=document.getElementById('mobile-login-link');if(u){if(al)al.style.display='none';if(ul)ul.style.display='block';if(ml)ml.textContent='Logout'}else{if(al)al.style.display='block';if(ul)ul.style.display='none';if(ml)ml.textContent='Login'}}
+function requireAuth(){if(!currentUser){openLoginModal();toast('Please login to continue','info');return false}return true}
+function updateNavAuth(u){var al=document.getElementById('dd-auth'),ul=document.getElementById('dd-user'),ml=document.getElementById('mobile-login-link');if(u){if(al)al.style.display='none';if(ul)ul.style.display='block';if(ml)ml.textContent='Logout'}else{if(al)al.style.display='none';if(ul)ul.style.display='none';if(ml)ml.textContent='Login'}}
 
 function toast(msg,type){type=type||'info';var c=document.getElementById('toast-container');var t=document.createElement('div');t.className='toast toast--'+type;t.innerHTML='<span>'+msg+'</span><button class="toast__close" aria-label="Dismiss">&times;</button>';c.appendChild(t);requestAnimationFrame(function(){t.classList.add('show')});t.querySelector('.toast__close').addEventListener('click',function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)});setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},3500)}
 var cartOverlay=document.getElementById('cart-overlay'),cartDrawer=document.getElementById('cart-drawer');
@@ -1232,10 +1288,10 @@ function renderCartBadge(){var b=document.getElementById('nav-cart-badge'),mb=do
 document.getElementById('cd-close').addEventListener('click',closeCartDrawer);cartOverlay.addEventListener('click',closeCartDrawer);
 document.getElementById('nav-cart-btn').addEventListener('click',openCartDrawer);
 var userBtn=document.getElementById('nav-user-btn'),userDd=document.getElementById('nav-user-dd');
-userBtn.addEventListener('click',function(e){e.stopPropagation();userDd.classList.toggle('open')});
+userBtn.addEventListener('click',function(e){e.stopPropagation();if(currentUser){userDd.classList.toggle('open')}else{openLoginModal()}});
 document.addEventListener('click',function(){userDd.classList.remove('open')});
 userDd.addEventListener('click',function(e){e.stopPropagation()});
-document.getElementById('nav-wishlist-btn').addEventListener('click',function(){window.location.hash=currentUser?'#/wishlist':'#/login'});
+document.getElementById('nav-wishlist-btn').addEventListener('click',function(){if(currentUser){window.location.hash='#/wishlist'}else{openLoginModal()}});
 document.getElementById('nav-logout-btn').addEventListener('click',function(){logout()});
 document.getElementById('cd-view-cart').addEventListener('click',function(e){e.preventDefault();closeCartDrawer();window.location.hash='#/cart'});
 document.getElementById('cd-checkout').addEventListener('click',function(e){e.preventDefault();closeCartDrawer();if(requireAuth())window.location.hash='#/checkout'});
@@ -1262,7 +1318,7 @@ function goToProduct(id){closeSearch();window.location.hash='#/product/'+id}
 var currentRoute='';
 function parseHash(){var h=window.location.hash.replace(/^#\/?/,'');var qi=h.indexOf('?');var query={};if(qi>-1){h.substring(qi+1).split('&').forEach(function(p){var kv=p.split('=');query[decodeURIComponent(kv[0])]=decodeURIComponent(kv[1]||'')});h=h.substring(0,qi)}var parts=h.split('/');return{path:parts,query:query}}
 function navigate(){var r=parseHash(),page=r.path[0]||'',param=r.path[1]||'';currentRoute=page;var pages=document.querySelectorAll('.page');pages.forEach(function(p){p.classList.remove('active')});document.getElementById('main-footer').style.display='block';closeMobileMenu();window.scrollTo(0,0);
-switch(page){case'':case'home':document.getElementById('page-home').classList.add('active');initHome();break;case'shop':document.getElementById('page-shop').classList.add('active');renderShop(r.query.category||'all');break;case'product':document.getElementById('page-product').classList.add('active');renderProduct(param);break;case'cart':document.getElementById('page-cart').classList.add('active');renderCartPage();break;case'checkout':if(!requireAuth())return;document.getElementById('page-checkout').classList.add('active');renderCheckout();break;case'order-confirm':document.getElementById('page-order-confirm').classList.add('active');renderOrderConfirm(param);break;case'track-order':document.getElementById('page-track-order').classList.add('active');renderTrackOrder();break;case'login':if(currentUser){window.location.hash='#/account';return}document.getElementById('page-login').classList.add('active');renderLogin();break;case'account':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount();break;case'orders':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount('orders');break;case'wishlist':document.getElementById('page-account').classList.add('active');renderAccount('wishlist');break;case'addresses':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount('addresses');break;case'about':document.getElementById('page-about').classList.add('active');renderAbout();break;case'track':document.getElementById('page-track-order').classList.add('active');renderTrackOrder();break;default:document.getElementById('page-home').classList.add('active');initHome()}
+switch(page){case'':case'home':document.getElementById('page-home').classList.add('active');initHome();break;case'shop':document.getElementById('page-shop').classList.add('active');renderShop(r.query.category||'all');break;case'product':document.getElementById('page-product').classList.add('active');renderProduct(param);break;case'cart':document.getElementById('page-cart').classList.add('active');renderCartPage();break;case'checkout':if(!requireAuth())return;document.getElementById('page-checkout').classList.add('active');renderCheckout();break;case'order-confirm':document.getElementById('page-order-confirm').classList.add('active');renderOrderConfirm(param);break;case'track-order':document.getElementById('page-track-order').classList.add('active');renderTrackOrder();break;case'login':if(currentUser){window.location.hash='#/account';return}openLoginModal();document.getElementById('page-home').classList.add('active');initHome();break;case'account':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount();break;case'orders':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount('orders');break;case'wishlist':document.getElementById('page-account').classList.add('active');renderAccount('wishlist');break;case'addresses':if(!requireAuth())return;document.getElementById('page-account').classList.add('active');renderAccount('addresses');break;case'about':document.getElementById('page-about').classList.add('active');renderAbout();break;case'track':document.getElementById('page-track-order').classList.add('active');renderTrackOrder();break;default:document.getElementById('page-home').classList.add('active');initHome()}
 updateMobileNav(page)}
 window.addEventListener('hashchange',navigate);
 function initHome(){renderHomeCategories();renderHomeBestsellers();renderHomeFresh();renderHomeFeatured();initScrollReveal()}
@@ -1288,11 +1344,35 @@ function renderOrderConfirm(id){var el=document.getElementById('order-confirm-co
 function renderOrderConfirmUI(el,order){var slotLabels={'slot-morning':'8:00 AM - 11:00 AM','slot-afternoon':'12:00 PM - 3:00 PM','slot-evening':'4:00 PM - 7:00 PM','slot-night':'7:30 PM - 9:30 PM'};el.innerHTML='<div class="oc-card"><div class="oc-card__icon">&#10004;</div><h1 class="oc-card__title">Order Confirmed!</h1><p class="oc-card__subtitle">Thank you, '+order.name+'! Your order has been received.</p><div class="oc-card__details"><div class="oc-detail-row"><span class="oc-detail-row__label">Order ID</span><span class="oc-detail-row__value">'+order.id+'</span></div><div class="oc-detail-row"><span class="oc-detail-row__label">Items</span><span class="oc-detail-row__value">'+order.items.length+' item'+(order.items.length!==1?'s':'')+'</span></div><div class="oc-detail-row"><span class="oc-detail-row__label">Total</span><span class="oc-detail-row__value">'+fp(order.grand)+'</span></div><div class="oc-detail-row"><span class="oc-detail-row__label">Payment</span><span class="oc-detail-row__value">'+(order.payment==='cod'?'Cash on Delivery':'UPI Payment')+'</span></div><div class="oc-detail-row"><span class="oc-detail-row__label">Delivery Slot</span><span class="oc-detail-row__value">'+(slotLabels[order.slot]||order.slot)+'</span></div><div class="oc-detail-row"><span class="oc-detail-row__label">Delivery Address</span><span class="oc-detail-row__value">'+order.address+', '+order.pin+'</span></div></div><div class="oc-card__actions"><a href="#/track-order/'+order.id+'" class="btn btn-green">Track Order</a><a href="#/" class="btn btn-ghost">Continue Shopping</a></div></div>'}
 function renderTrackOrder(){var el=document.getElementById('track-order-content');var hash=parseHash();var orderId=hash.path[1]||'';if(orderId){db.collection('orders').doc(orderId).get().then(function(doc){if(doc.exists)renderTrackOrderUI(el,doc.data());else renderTrackOrderUI(el,null)}).catch(function(){renderTrackOrderUI(el,null)})}else{renderTrackOrderUI(el,null)}}
 function renderTrackOrderUI(el,order){if(!order){var local=localStorage.getItem('kgb-last-order');if(local)order=JSON.parse(local)}if(!order){el.innerHTML='<div class="empty-state"><h2>No active orders</h2><p>Place an order to track it here.</p><a href="#/shop" class="btn btn-green">Shop Now</a></div>';return}var statusMap={confirmed:1,preparing:2,packed:3,out_for_delivery:4,delivered:5,cancelled:-1,undelivered:-1};var currentStep=statusMap[order.status]||1;var steps=[{label:'Order Placed',icon:'&#128196;',done:true},{label:'Confirmed',icon:'&#10003;',done:currentStep>=1},{label:'Preparing',icon:'&#127856;',done:currentStep>=2},{label:'Packed',icon:'&#128230;',done:currentStep>=3},{label:'Out for Delivery',icon:'&#128666;',done:currentStep>=4},{label:'Delivered',icon:'&#127873;',done:currentStep>=5}];var html='<div class="track-card"><h2 class="track-card__title">Order #'+order.id+'</h2><div class="track-steps">';steps.forEach(function(s,i){var isCurrent=i===currentStep-1;var cls=s.done?(isCurrent?'track-step done active':'track-step done'):'track-step';html+='<div class="'+cls+'"><div class="track-step__icon">'+s.icon+'</div><div class="track-step__info"><div class="track-step__label">'+s.label+'</div></div></div>'});html+='</div><div class="track-card__eta"><div class="track-card__eta-label">Estimated Delivery</div><div class="track-card__eta-time">'+DELIVERY_CONFIG.expressMinutes+' minutes</div></div><div class="track-card__items">';order.items.forEach(function(item){html+='<div class="track-card__item"><span>'+item.name+' ('+item.weight+') x'+item.qty+'</span><span>'+fp(item.total)+'</span></div>'});html+='<div class="track-card__divider"></div><div class="track-card__item track-card__item--total"><span>Total</span><span>'+fp(order.grand)+'</span></div></div><div class="track-card__actions"><a href="#/account" class="btn btn-ghost">My Orders</a><a href="#/" class="btn btn-green">Back to Home</a></div></div>';el.innerHTML=html}
-function renderLogin(){var el=document.getElementById('auth-card');el.innerHTML='<div class="auth-card"><div class="auth-card__left"><div class="auth-card__brand"><div class="auth-card__logo">Kailash</div><h2 class="auth-card__tagline">Welcome to Kailash Ghee Bhandar</h2><p class="auth-card__desc">Fresh dairy delivered to your doorstep in Bhagalpur.</p></div></div><div class="auth-card__right"><h2 class="auth-card__title" id="auth-title">Login / Sign Up</h2><div class="auth-form" id="auth-form"><div class="form-group" id="auth-name-group" style="display:none"><label class="form-label">Full Name</label><input type="text" class="form-input" id="auth-name" placeholder="Your full name"></div><div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="auth-email" placeholder="your@email.com"></div><div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="auth-pass" placeholder="Min 6 characters"></div><button class="btn btn-green btn-full" id="auth-submit-btn" onclick="doEmailAuth()">Continue with Email</button><div class="auth-divider"><span>or</span></div><button class="btn btn-google btn-full" onclick="doGoogleSignIn()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="20" height="20" style="margin-right:8px;vertical-align:middle">Continue with Google</button><p class="auth-toggle" id="auth-toggle">Don\'t have an account? <button class="btn-link" onclick="toggleAuthMode()">Sign Up</button></p><p class="auth-terms">By continuing, you agree to our <a href="#/about">Terms</a> and <a href="#/about">Privacy Policy</a>.</p></div></div></div>'}
-var authMode='login';function toggleAuthMode(){authMode=authMode==='login'?'register':'login';var btn=document.getElementById('auth-submit-btn');var toggle=document.getElementById('auth-toggle');var nameGrp=document.getElementById('auth-name-group');var title=document.getElementById('auth-title');if(authMode==='register'){btn.textContent='Create Account';title.textContent='Create Account';nameGrp.style.display='block';toggle.innerHTML='Already have an account? <button class="btn-link" onclick="toggleAuthMode()">Login</button>'}else{btn.textContent='Continue with Email';title.textContent='Login / Sign Up';nameGrp.style.display='none';toggle.innerHTML='Don\'t have an account? <button class="btn-link" onclick="toggleAuthMode()">Sign Up</button>'}}
-function doEmailAuth(){var email=document.getElementById('auth-email').value.trim(),pass=document.getElementById('auth-pass').value;if(!email||!pass){toast('Please enter email and password','error');return}if(pass.length<6){toast('Password must be at least 6 characters','error');return}var btn=document.getElementById('auth-submit-btn');btn.disabled=true;btn.textContent='Please wait...';if(authMode==='register'){var name=(document.getElementById('auth-name').value||'').trim();if(!name){toast('Please enter your name','error');btn.disabled=false;btn.textContent='Create Account';return}signup(email,pass,name).then(function(){toast('Account created! Welcome!','success');window.location.hash='#/account'}).catch(function(e){toast(e.message||'Signup failed','error');btn.disabled=false;btn.textContent='Create Account'})}else{login(email,pass).then(function(){toast('Logged in successfully!','success');window.location.hash='#/account'}).catch(function(e){toast(e.message||'Login failed. Check your email and password.','error');btn.disabled=false;btn.textContent='Continue with Email'})}}
-function doGoogleSignIn(){googleSignIn().then(function(){toast('Logged in with Google!','success');window.location.hash='#/account'}).catch(function(e){toast(e.message||'Google sign-in failed','error')})}
-var activeAccountTab='orders';function renderAccount(tab){activeAccountTab=tab||'orders';var user=currentUser;if(!user){window.location.hash='#/login';return}var sidebar=document.getElementById('acc-sidebar');var main=document.getElementById('acc-content');var tabs=[{id:'orders',label:'My Orders',icon:'&#128196;'},{id:'wishlist',label:'Wishlist',icon:'&#10084;'},{id:'addresses',label:'Addresses',icon:'&#128205;'},{id:'profile',label:'Profile',icon:'&#128100;'}];var tabsHtml='';tabs.forEach(function(t){tabsHtml+='<button class="sidebar-link '+(activeAccountTab===t.id?'active':'')+'" onclick="renderAccount(\''+t.id+'\')">'+t.icon+' '+t.label+'</button>'});sidebar.innerHTML='<div class="account-user"><div class="account-user__avatar">'+(user.email?user.email[0].toUpperCase():'U')+'</div><div class="account-user__name">'+(user.displayName||user.email||'User')+'</div><div class="account-user__email">'+(user.email||'')+'</div></div><nav class="account-nav">'+tabsHtml+'<button class="sidebar-link" onclick="logout()">Logout</button></nav>';if(activeAccountTab==='orders')renderAccountOrders();else if(activeAccountTab==='wishlist')main.innerHTML=renderAccountWishlist();else if(activeAccountTab==='addresses')main.innerHTML=renderAccountAddresses();else if(activeAccountTab==='profile')main.innerHTML=renderAccountProfile(user)}
+function renderLogin(){}
+var authMode='login';
+function openLoginModal(){var ol=document.getElementById('login-overlay');if(ol)ol.classList.add('open');document.body.style.overflow='hidden'}
+function closeLoginModal(){var ol=document.getElementById('login-overlay');if(ol)ol.classList.remove('open');document.body.style.overflow=''}
+document.getElementById('login-close').addEventListener('click',function(){closeLoginModal()});
+document.getElementById('login-overlay').addEventListener('click',function(e){if(e.target===this)closeLoginModal()});
+document.getElementById('login-submit-btn').addEventListener('click',function(){
+var email=document.getElementById('login-email').value.trim(),pass=document.getElementById('login-pass').value;
+if(!email||!pass){toast('Please enter email and password','error');return}
+if(pass.length<6){toast('Password must be at least 6 characters','error');return}
+var btn=document.getElementById('login-submit-btn');btn.disabled=true;btn.textContent='Please wait...';
+if(authMode==='register'){
+var nm=(document.getElementById('login-name').value||'').trim();
+if(!nm){toast('Please enter your name','error');btn.disabled=false;btn.textContent='Create Account';return}
+signup(email,pass,nm).then(function(){toast('Account created! Welcome!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Signup failed','error');btn.disabled=false;btn.textContent='Create Account'})
+}else{
+login(email,pass).then(function(){toast('Logged in successfully!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Login failed. Check your email and password.','error');btn.disabled=false;btn.textContent='Continue with Email'})
+}});
+document.getElementById('login-google-btn').addEventListener('click',function(){
+googleSignIn().then(function(){toast('Logged in with Google!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Google sign-in failed','error')})
+});
+function bindLoginToggle(){document.getElementById('login-toggle-btn').addEventListener('click',function toggleLoginMode(){
+authMode=authMode==='login'?'register':'login';
+var btn=document.getElementById('login-submit-btn');var title=document.getElementById('login-title');var nameGrp=document.getElementById('login-name-group');var toggleText=document.getElementById('login-toggle-text');
+if(authMode==='register'){btn.textContent='Create Account';title.textContent='Create Account';nameGrp.style.display='block';toggleText.innerHTML='Already have an account? <button class="btn-link" id="login-toggle-btn">Login</button>'
+}else{btn.textContent='Continue with Email';title.textContent='Login / Sign Up';nameGrp.style.display='none';toggleText.innerHTML='Don''t have an account? <button class="btn-link" id="login-toggle-btn">Sign Up</button>'}
+bindLoginToggle()})}
+bindLoginToggle()
+var activeAccountTab='orders';function renderAccount(tab){activeAccountTab=tab||'orders';var user=currentUser;if(!user){openLoginModal();return}var sidebar=document.getElementById('acc-sidebar');var main=document.getElementById('acc-content');var tabs=[{id:'orders',label:'My Orders',icon:'&#128196;'},{id:'wishlist',label:'Wishlist',icon:'&#10084;'},{id:'addresses',label:'Addresses',icon:'&#128205;'},{id:'profile',label:'Profile',icon:'&#128100;'}];var tabsHtml='';tabs.forEach(function(t){tabsHtml+='<button class="sidebar-link '+(activeAccountTab===t.id?'active':'')+'" onclick="renderAccount(\''+t.id+'\')">'+t.icon+' '+t.label+'</button>'});sidebar.innerHTML='<div class="account-user"><div class="account-user__avatar">'+(user.email?user.email[0].toUpperCase():'U')+'</div><div class="account-user__name">'+(user.displayName||user.email||'User')+'</div><div class="account-user__email">'+(user.email||'')+'</div></div><nav class="account-nav">'+tabsHtml+'<button class="sidebar-link" onclick="logout()">Logout</button></nav>';if(activeAccountTab==='orders')renderAccountOrders();else if(activeAccountTab==='wishlist')main.innerHTML=renderAccountWishlist();else if(activeAccountTab==='addresses')main.innerHTML=renderAccountAddresses();else if(activeAccountTab==='profile')main.innerHTML=renderAccountProfile(user)}
 function renderAccountOrders(){if(!currentUser)return'<div class="empty-state"><p>Please login to view orders</p></div>';var el=document.getElementById('acc-content');el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--clr-muted)">Loading orders...</div>';db.collection('orders').where('userId','==',currentUser.uid).orderBy('createdAt','desc').get().then(function(snap){if(snap.empty){el.innerHTML='<div class="empty-state"><p>No orders yet</p><a href="#/shop" class="btn btn-green">Shop Now</a></div>';return}var html='';snap.forEach(function(doc){var o=doc.data();var statusLabels={confirmed:'Confirmed',preparing:'Preparing',packed:'Packed',out_for_delivery:'Out for Delivery',delivered:'Delivered',cancelled:'Cancelled',undelivered:'Undelivered'};var statusClass=o.status||'confirmed';html+='<div class="order-card"><div class="order-card__header"><div class="order-card__id">'+o.id+'</div><div class="order-card__date">'+(o.createdAt?new Date(o.createdAt.toDate()).toLocaleDateString('en-IN'):'Recent')+'</div></div><div class="order-card__items">';o.items.forEach(function(it){html+='<div class="order-card__item"><span>'+it.name+' ('+it.weight+') x'+it.qty+'</span><span>'+fp(it.total)+'</span></div>'});html+='<div class="order-card__divider"></div><div class="order-card__item"><span>Total</span><span>'+fp(o.grand)+'</span></div></div><div class="order-card__footer"><span class="order-card__status order-card__status--'+statusClass+'">'+(statusLabels[o.status]||o.status)+'</span><a href="#/track-order/'+o.id+'" class="btn btn-ghost btn-sm">Track</a></div></div>'});el.innerHTML=html}).catch(function(){var localOrders=JSON.parse(localStorage.getItem('kgb-orders-history')||'[]');if(localOrders.length===0){el.innerHTML='<div class="empty-state"><p>No orders yet</p><a href="#/shop" class="btn btn-green">Shop Now</a></div>';return}var html='';localOrders.forEach(function(o){html+='<div class="order-card"><div class="order-card__header"><div class="order-card__id">'+o.id+'</div><div class="order-card__date">'+new Date(o.date||Date.now()).toLocaleDateString('en-IN')+'</div></div><div class="order-card__items">';o.items.forEach(function(it){html+='<div class="order-card__item"><span>'+it.name+' ('+it.weight+') x'+it.qty+'</span><span>'+fp(it.total)+'</span></div>'});html+='<div class="order-card__divider"></div><div class="order-card__item"><span>Total</span><span>'+fp(o.grand)+'</span></div></div><div class="order-card__footer"><span class="order-card__status order-card__status--confirmed">Confirmed</span><a href="#/track-order" class="btn btn-ghost btn-sm">Track</a></div></div>'});el.innerHTML=html})}
 function renderAccountWishlist(){var ids=Store.getWishlist();if(ids.length===0)return'<div class="empty-state"><p>Your wishlist is empty</p><a href="#/shop" class="btn btn-green">Discover Products</a></div>';var items=ids.map(function(id){return getProductById(id)}).filter(Boolean);return'<div class="product-grid product-grid--4">'+items.map(function(p,i){return renderProductCard(p,i)}).join('')+'</div>'}
 function renderAccountAddresses(){var saved=JSON.parse(localStorage.getItem('kgb-address')||'null');return'<div class="address-card"><div class="address-card__type">Default Address</div><div class="address-card__text">Add your delivery address to make checkout faster.</div><div class="form-grid" style="margin-top:1rem"><div class="form-group"><label class="form-label">Address</label><input type="text" class="form-input" id="acc-address" placeholder="House/Flat, Street, Area" value="'+(saved?saved.address:'')+'"></div><div class="form-group"><label class="form-label">PIN Code</label><input type="text" class="form-input" id="acc-pin" placeholder="812001" maxlength="6" value="'+(saved?saved.pin:'')+'"></div><div class="form-group form-group--full"><button class="btn btn-green" onclick="saveAddress()">Save Address</button></div></div></div>'}
