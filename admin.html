@@ -1577,8 +1577,13 @@ function renderDeliveryAreas() {
     </div>
   `).join('');
 
-  document.getElementById('free-delivery-threshold').value = allDeliveryPins[0]?.freeDeliveryThreshold || 500;
-  document.getElementById('default-delivery-fee').value = allDeliveryPins[0]?.fee || 30;
+  db.collection('settings').doc('delivery').get().then(function(doc){
+    if(doc.exists){
+      var d=doc.data();
+      if(document.getElementById('free-delivery-threshold'))document.getElementById('free-delivery-threshold').value=d.freeDeliveryThreshold||500;
+      if(document.getElementById('default-delivery-fee'))document.getElementById('default-delivery-fee').value=d.defaultFee||30;
+    }
+  });
 }
 
 async function togglePin(id, active) {
@@ -1677,12 +1682,11 @@ async function addNewPin() {
   } catch (e) { showToast('Error: ' + e.message, 'error'); }
 }
 
-async function saveDeliverySettings() {
-  try {
-    const threshold = parseFloat(document.getElementById('free-delivery-threshold').value) || 500;
-    await db.collection('settings').doc('delivery').set({ freeDeliveryThreshold: threshold }, { merge: true });
-    showToast('Delivery settings saved');
-  } catch (e) { showToast('Error: ' + e.message, 'error'); }
+async function saveDeliverySettings(){
+  var threshold=parseFloat(document.getElementById('free-delivery-threshold').value)||500;
+  var fee=parseFloat(document.getElementById('default-delivery-fee').value)||30;
+  await db.collection('settings').doc('delivery').set({freeDeliveryThreshold:threshold,defaultFee:fee},{merge:true});
+  showToast('Delivery settings saved','success');
 }
 
 // ===== COUPONS =====
