@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1369,7 +1369,7 @@ function bindLoginToggle(){document.getElementById('login-toggle-btn').addEventL
 authMode=authMode==='login'?'register':'login';
 var btn=document.getElementById('login-submit-btn');var title=document.getElementById('login-title');var nameGrp=document.getElementById('login-name-group');var toggleText=document.getElementById('login-toggle-text');
 if(authMode==='register'){btn.textContent='Create Account';title.textContent='Create Account';nameGrp.style.display='block';toggleText.innerHTML='Already have an account? <button class="btn-link" id="login-toggle-btn">Login</button>'
-}else{btn.textContent='Continue with Email';title.textContent='Login / Sign Up';nameGrp.style.display='none';toggleText.innerHTML='Don''t have an account? <button class="btn-link" id="login-toggle-btn">Sign Up</button>'}
+}else{btn.textContent='Continue with Email';title.textContent='Login / Sign Up';nameGrp.style.display='none';toggleText.innerHTML='Don\'t have an account? <button class="btn-link" id="login-toggle-btn">Sign Up</button>'}
 bindLoginToggle()})}
 bindLoginToggle()
 var activeAccountTab='orders';function renderAccount(tab){activeAccountTab=tab||'orders';var user=currentUser;if(!user){openLoginModal();return}var sidebar=document.getElementById('acc-sidebar');var main=document.getElementById('acc-content');var tabs=[{id:'orders',label:'My Orders',icon:'&#128196;'},{id:'wishlist',label:'Wishlist',icon:'&#10084;'},{id:'addresses',label:'Addresses',icon:'&#128205;'},{id:'profile',label:'Profile',icon:'&#128100;'}];var tabsHtml='';tabs.forEach(function(t){tabsHtml+='<button class="sidebar-link '+(activeAccountTab===t.id?'active':'')+'" onclick="renderAccount(\''+t.id+'\')">'+t.icon+' '+t.label+'</button>'});sidebar.innerHTML='<div class="account-user"><div class="account-user__avatar">'+(user.email?user.email[0].toUpperCase():'U')+'</div><div class="account-user__name">'+(user.displayName||user.email||'User')+'</div><div class="account-user__email">'+(user.email||'')+'</div></div><nav class="account-nav">'+tabsHtml+'<button class="sidebar-link" onclick="logout()">Logout</button></nav>';if(activeAccountTab==='orders')renderAccountOrders();else if(activeAccountTab==='wishlist')main.innerHTML=renderAccountWishlist();else if(activeAccountTab==='addresses')main.innerHTML=renderAccountAddresses();else if(activeAccountTab==='profile')main.innerHTML=renderAccountProfile(user)}
