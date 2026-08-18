@@ -1,0 +1,110 @@
+﻿/* ============================================
+   KAILASH GHEE BHANDAR — Animations
+   ============================================ */
+
+/* Hero entrance */
+.hero__eyebrow,
+.hero__title,
+.hero__desc,
+.hero__actions {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero.loaded .hero__eyebrow { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease-out) 0.2s; }
+.hero.loaded .hero__title { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease-out) 0.4s; }
+.hero.loaded .hero__desc { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease-out) 0.6s; }
+.hero.loaded .hero__actions { opacity: 1; transform: translateY(0); transition: all 0.8s var(--ease-out) 0.8s; }
+
+.hero__composition {
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+}
+
+.hero.loaded .hero__composition {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: all 1s var(--ease-out) 0.5s;
+}
+
+.hero__tag {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.hero.loaded .hero__tag {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s var(--ease-out);
+}
+
+.hero.loaded .hero__tag--top { transition-delay: 1s; }
+.hero.loaded .hero__tag--bottom { transition-delay: 1.2s; }
+
+/* Process line animation */
+.process-step .process-step__num {
+  transition: all 0.5s var(--ease-out);
+}
+
+/* Product card image hover */
+.product-card__visual::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.product-card:hover .product-card__visual::after { opacity: 1; }
+
+.product-card__placeholder {
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.product-card:hover .product-card__placeholder {
+  transform: scale(1.05);
+}
+
+/* Trust item hover */
+.trust-item {
+  transition: background var(--dur-base) var(--ease-out);
+}
+
+.trust-item:hover {
+  background: var(--clr-ivory);
+}
+
+/* CTA section glow */
+.cta-section .cta-headline {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.cta-section.visible .cta-headline {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s var(--ease-out);
+}
+
+.cta-section .cta-desc {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.cta-section.visible .cta-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s var(--ease-out) 0.2s;
+}
+
+.cta-section .cta-actions {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.cta-section.visible .cta-actions {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s var(--ease-out) 0.4s;
+}
