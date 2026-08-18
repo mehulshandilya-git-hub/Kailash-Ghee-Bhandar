@@ -117,9 +117,8 @@
     .search-overlay__item-price{margin-left:auto;font-size:.8rem;font-weight:600;color:var(--clr-green)}
     .search-overlay__empty{text-align:center;padding:3rem 1rem;color:var(--clr-muted)}
 
-    .hero{background:linear-gradient(135deg,var(--clr-green),var(--clr-green-dk));padding:4rem 0 3rem;position:relative;overflow:hidden}
+    .hero{background:#000;padding:4rem 0 3rem;position:relative;overflow:hidden}
     .hero__video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
-    .hero::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(47,107,69,.82),rgba(47,107,69,.72));z-index:1;pointer-events:none}
     .hero__inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
     .hero__content{color:var(--clr-white)}
     .hero__badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);padding:.4rem .8rem;border-radius:var(--r-pill);font-size:.7rem;font-weight:500;margin-bottom:1.5rem}
@@ -1065,7 +1064,7 @@
   <div id="page-checkout" class="page"><div class="container checkout-page" id="checkout-content"></div></div>
   <div id="page-order-confirm" class="page"><div class="container" id="order-confirm-content"></div></div>
   <div id="page-track-order" class="page"><div class="container" id="track-order-content"></div></div>
-  <div id="page-login" class="page"><div class="auth-page"><div class="auth-card" id="auth-card"></div></div></div>
+  <div id="page-login" class="page"><div class="auth-page"><div id="auth-card"></div></div></div>
   <div id="page-account" class="page"><div class="container account-page"><div class="account-layout"><aside class="account-sidebar" id="acc-sidebar"></aside><main class="account-content" id="acc-content"></main></div></div></div>
   <div id="page-about" class="page"><div class="container about-page" id="about-content"></div></div>  <footer class="footer" id="main-footer">
     <div class="container">
