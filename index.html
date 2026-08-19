@@ -684,7 +684,7 @@
     .btn-google:hover{background:var(--clr-bg)}
     .btn-full{width:100%}
 
-    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem}
     .login-overlay.open{display:flex}
     .login-modal{background:var(--clr-white);border-radius:var(--r-lg);display:grid;grid-template-columns:1fr 1fr;max-width:720px;width:100%;max-height:90vh;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)}
     .login-modal__close{position:absolute;top:.75rem;right:.75rem;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.9);font-size:1.25rem;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
@@ -1372,12 +1372,12 @@ var btn=document.getElementById('login-submit-btn');btn.disabled=true;btn.textCo
 if(authMode==='register'){
 var nm=(document.getElementById('login-name').value||'').trim();
 if(!nm){toast('Please enter your name','error');btn.disabled=false;btn.textContent='Create Account';return}
-signup(email,pass,nm).then(function(){toast('Account created! Welcome!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Signup failed','error');btn.disabled=false;btn.textContent='Create Account'})
+signup(email,pass,nm).then(function(){toast('Account created! Welcome!','success');closeLoginModal();navigate()}).catch(function(e){toast(e.message||'Signup failed','error');btn.disabled=false;btn.textContent='Create Account'})
 }else{
-login(email,pass).then(function(){toast('Logged in successfully!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Login failed. Check your email and password.','error');btn.disabled=false;btn.textContent='Continue with Email'})
+login(email,pass).then(function(){toast('Logged in successfully!','success');closeLoginModal();navigate()}).catch(function(e){toast(e.message||'Login failed. Check your email and password.','error');btn.disabled=false;btn.textContent='Continue with Email'})
 }});
 document.getElementById('login-google-btn').addEventListener('click',function(){
-googleSignIn().then(function(){toast('Logged in with Google!','success');closeLoginModal();window.location.hash='#/account'}).catch(function(e){toast(e.message||'Google sign-in failed','error')})
+googleSignIn().then(function(){toast('Logged in with Google!','success');closeLoginModal();navigate()}).catch(function(e){toast(e.message||'Google sign-in failed','error')})
 });
 function bindLoginToggle(){document.getElementById('login-toggle-btn').addEventListener('click',function toggleLoginMode(){
 authMode=authMode==='login'?'register':'login';
